@@ -1,42 +1,32 @@
-'use client'
-
 import Link from 'next/link'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
 import { SERVICES, getServiceById } from '@/lib/services-data'
 import { ArrowLeft, Check, Clock, DollarSign } from 'lucide-react'
-import { useParams } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
-export default function ServiceDetail() {
-  const params = useParams()
-  const serviceId = params.id as string
-  const service = getServiceById(serviceId)
+export async function generateStaticParams() {
+  return SERVICES.map((service) => ({
+    id: service.id,
+  }))
+}
+
+export default async function ServiceDetail({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const service = getServiceById(id)
 
   if (!service) {
-    return (
-      <>
-        <Header />
-        <main className="bg-background">
-          <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Service Not Found</h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              The service you're looking for doesn't exist.
-            </p>
-            <Link href="/services">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                Back to Services
-              </Button>
-            </Link>
-          </section>
-        </main>
-        <Footer />
-      </>
-    )
+    notFound()
   }
 
-  const relatedServices = SERVICES.filter((s) => s.id !== service.id).slice(0, 3)
-
+  const relatedServices = SERVICES.filter(
+    (s) => s.id !== service.id
+  ).slice(0, 3)
   return (
     <>
       <Header />

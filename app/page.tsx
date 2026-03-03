@@ -9,37 +9,13 @@ import { PricingCard } from '@/components/pricing-card'
 import { BookingModal } from '@/components/booking-modal'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, Sparkles, Zap, Users, Award, ArrowRight } from 'lucide-react'
+import { SERVICES } from '@/lib/services-data'
 
 export default function Home() {
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null)
   const [bookingModalOpen, setBookingModalOpen] = useState(false)
 
-  const services = [
-    {
-      id: 'web-design',
-      icon: Sparkles,
-      title: 'Web Design',
-      description: 'Beautiful, user-centered interfaces that convert',
-      deliveryTime: '2-4 weeks',
-      features: ['Responsive design', 'Accessibility first', 'Modern aesthetics'],
-    },
-    {
-      id: 'development',
-      icon: Zap,
-      title: 'Development',
-      description: 'Fast, scalable applications built with latest tech',
-      deliveryTime: '4-8 weeks',
-      features: ['Full-stack solutions', 'Performance optimized', 'API integrations'],
-    },
-    {
-      id: 'consulting',
-      icon: Users,
-      title: 'Consulting',
-      description: 'Strategic guidance for your digital transformation',
-      deliveryTime: '1-2 weeks',
-      features: ['Expert advice', 'Best practices', 'Custom roadmaps'],
-    },
-  ]
+
 
   const testimonials = [
     {
@@ -258,13 +234,13 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {services.map((service, index) => (
+            {SERVICES.slice(0, 3).map((service, index) => (
               <ServiceCard
                 key={index}
                 id={service.id}
                 icon={service.icon}
                 title={service.title}
-                description={service.description}
+                description={service.shortDescription}
                 deliveryTime={service.deliveryTime}
                 features={service.features}
               />
